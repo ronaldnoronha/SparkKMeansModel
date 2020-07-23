@@ -1,0 +1,11 @@
+[0m[[0m[0mdebug[0m] [0m[0mPackaging /Users/ronnie/Documents/SparkKMeansModel/target/scala-2.12/spark_example_2.12-0.1.jar ...[0m
+[0m[[0m[0mdebug[0m] [0m[0mInput file mappings:[0m
+[0m[[0m[0mdebug[0m] [0m[0m	example[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  /Users/ronnie/Documents/SparkKMeansModel/target/scala-2.12/classes/example[0m
+[0m[[0m[0mdebug[0m] [0m[0m	example/stream[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  /Users/ronnie/Documents/SparkKMeansModel/target/scala-2.12/classes/example/stream[0m
+[0m[[0m[0mdebug[0m] [0m[0m	example/stream/StreamingKMeansModelExample.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  /Users/ronnie/Documents/SparkKMeansModel/target/scala-2.12/classes/example/stream/StreamingKMeansModelExample.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	example/stream/StreamingKMeansModelExample$.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  /Users/ronnie/Documents/SparkKMeansModel/target/scala-2.12/classes/example/stream/StreamingKMeansModelExample$.class[0m
+[0m[[0m[0mdebug[0m] [0m[0mDone packaging.[0m
