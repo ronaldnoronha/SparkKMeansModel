@@ -9,15 +9,15 @@ from time import sleep
 
 with open('./conf/master', 'r') as f:
     array = f.readline().split()
-    remote_host = array[0]
-    remote_port = array[1]
+    master_host = array[0]
+    master_port = array[1]
     user = array[2]
     host = array[3]
 
 config = Config(overrides={'user': user})
 conn = Connection(host=host, config=config)
 config_master = Config(overrides={'user': user, 'connect_kwargs': {'password': '1'}, 'sudo': {'password': '1'}})
-master = Connection(host=remote_host, config=config_master, gateway=conn)
+master = Connection(host=master_host, config=config_master, gateway=conn)
 
 slave_connections = []
 config_slaves = Config(overrides={'user': user, 'connect_kwargs': {'password': '1'}, 'sudo': {'password': '1'}})
@@ -83,6 +83,7 @@ def streaming_kmeans():
         'source /etc/profile && cd $SPARK_HOME && bin/spark-submit '
         '--packages org.apache.spark:spark-streaming-kafka-0-10_2.12:3.0.0 '
         '--class example.stream.StreamingKMeansModelExample '
+        '--master spark://' + str(master_host) + ':7077 --executor-memory 2g '
         '~/spark_example_2.12-0.1.jar '
         'localhost:9092 '
         'consumer-group '

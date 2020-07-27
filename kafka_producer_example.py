@@ -66,5 +66,5 @@ for i in range(len(features)):
     # message = str(datetime.now()) + ',' + str(features[i]) + ',' + str(target[i])
     print(message)
     producer.send('test',value=message)
-#     sleep(0.01)
+    sleep(0.01)
 
