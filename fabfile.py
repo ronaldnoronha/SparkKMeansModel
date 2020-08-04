@@ -99,3 +99,7 @@ def run_checker():
         'source /etc/profile && cd $SPARK_HOME && bin/spark-submit '
         '~/checker.py'
     )
+
+def stop():
+    stop_kafka()
+    stop_spark_cluster()

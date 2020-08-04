@@ -66,7 +66,7 @@ object StreamingKMeansModelExample {
     })
 //    println(model.toPMML())
     ssc.start()
-    ssc.awaitTerminationOrTimeout(1200000)
+    ssc.awaitTerminationOrTimeout(120000)
     ssc.stop()
     val sc = new SparkContext(conf)
     model.save(sc, "/home/ronald/kmeansModel")
