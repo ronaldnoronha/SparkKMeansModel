@@ -3,6 +3,7 @@ from json import dumps
 from sklearn.datasets import make_blobs
 from datetime import datetime
 import csv
+import time
 import socket
 
 
@@ -43,17 +44,17 @@ with open('centers.csv','w') as f:
 #         dct[fieldnames[len(centers[i])]] = cluster_num[i]
         writer.writerow(dct)
 
-features, target = create_data(100000,3,centers,0.65)
-with open('data.csv','w') as f:
-    fieldnames = ['x','y','z','target']
-    writer = csv.DictWriter(f,fieldnames)
-    writer.writeheader()
-    for i in range(len(features)):
-        dct= {}
-        for j in range(len(features[i])):
-            dct[fieldnames[j]]=features[i][j]
-        dct[fieldnames[len(features[i])]] = target[i]
-        writer.writerow(dct)
+
+# with open('data.csv','w') as f:
+#     fieldnames = ['x','y','z','target']
+#     writer = csv.DictWriter(f,fieldnames)
+#     writer.writeheader()
+#     for i in range(len(features)):
+#         dct= {}
+#         for j in range(len(features[i])):
+#             dct[fieldnames[j]]=features[i][j]
+#         dct[fieldnames[len(features[i])]] = target[i]
+#         writer.writerow(dct)
 
 
 s = socket.socket() #Create a socket object
@@ -66,13 +67,19 @@ s.listen() #Wait for the client connection
 while True:
     c,addr = s.accept() #Establish a connection with the client
     print("Got connection from"+ str(addr))
-    for i in range(len(features)):
-        message = str(datetime.now())+','
-        for j in features[i]:
-            message += str(j)+' '
-        message.strip()
+    # features, target = create_data(100, 3, centers, 0.65)
+    # for i in range(len(features)):
+    #     message = str(datetime.now())+','
+    #     # message+= ' '.join(features[i])
+    #     for j in features[i]:
+    #         message += ' '+ str(j)
+    #     message.strip()
+    #     print(f'Send: {message!r}')
+    #     c.send(message.encode())
+
+    t1 = time.time()
+    while time.time()<t1+1:
+        message = str(datetime.now())
         print(f'Send: {message!r}')
         c.send(message.encode())
-        sleep(0.01)
     c.close()
-    break

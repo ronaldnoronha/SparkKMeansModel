@@ -66,6 +66,13 @@ def start_kafka():
 def stop_kafka():
     master.run('tmux kill-session -t kafka')
 
+def start_datagenerator():
+    master.run('tmux new -d -s datagenerator')
+    master.run('tmux send -t datagenerator:0 python3\ /home/ronald/socketProducerExample.py ENTER')
+
+def stop_datagenerator():
+    master.run('tmux kill-session -t datagenerator')
+
 def streaming_kmeans():
     # Create Package
     os.system('sbt package')
@@ -73,23 +80,43 @@ def streaming_kmeans():
     transfer = Transfer(master)
     transfer.put('./target/scala-2.12/spark_example_2.12-0.1.jar')
     # Transfer datagenerator
-    transfer.put('./kafka_producer_example.py')
+    transfer.put('./socketProducerExample.py')
     # start spark cluster
     start_spark_cluster()
+    start_datagenerator()
     # start kafka
-    start_kafka()
+    # start_kafka()
     master.run('rm -rf kmeansModel')
     master.run(
         'source /etc/profile && cd $SPARK_HOME && bin/spark-submit '
-        '--packages org.apache.spark:spark-streaming-kafka-0-10_2.12:3.0.0 '
+        # '--packages org.apache.spark:spark-streaming-kafka-0-10_2.12:3.0.0 '
         '--class example.stream.StreamingKMeansModelExample '
-        '--master spark://' + str(master_host) + ':7077 --executor-memory 2g '
+        # '--master spark://' + str(master_host) + ':7077 --executor-memory 2g '
         '~/spark_example_2.12-0.1.jar '
-        'localhost:9092 '
-        'consumer-group '
-        'test'
+        'localhost '
+        '9999'
+        # 'test'
     )
-    run_checker()
+    # run_checker()
+
+def test_networkwordcount():
+    # Transfer package
+    transfer = Transfer(master)
+    # transfer.put('/Users/ronnie/Documents/spark_example/target/scala-2.12/spark_example_2.12-0.1.jar')
+    # master.run('rm -rf kmeansModel')
+    transfer.put('./socketProducerExample.py')
+    start_datagenerator()
+    master.run(
+        'source /etc/profile && cd $SPARK_HOME && bin/run-example '
+        # '--packages org.apache.spark:spark-streaming-kafka-0-10_2.12:3.0.0 '
+        'org.apache.spark.examples.streaming.NetworkWordCount '
+        # '--master spark://' + str(master_host) + ':7077 --executor-memory 2g '
+        # '~/spark_example_2.12-0.1.jar '
+        'localhost '
+        '9999'
+        # 'test'
+    )
+
 
 def run_checker():
     # transfer checker
@@ -101,5 +128,27 @@ def run_checker():
     )
 
 def stop():
-    stop_kafka()
+    # stop_kafka()
+    stop_datagenerator()
     stop_spark_cluster()
+
+def testStructuredNetworkWordCount():
+    # Transfer package
+    transfer = Transfer(master)
+    # transfer.put('/Users/ronnie/Documents/spark_example/target/scala-2.12/spark_example_2.12-0.1.jar')
+    # master.run('rm -rf kmeansModel')
+    transfer.put('./socketProducerExample.py')
+    start_spark_cluster()
+    start_datagenerator()
+    master.run(
+        'source /etc/profile && cd $SPARK_HOME && bin/spark-submit '
+        '--class org.apache.spark.examples.sql.streaming.StructuredNetworkWordCount '
+        '--master spark://' + str(master_host) +':7077 '
+        # '--deploy-mode cluster '
+        # '--supervise '
+        '--executor-memory 2g '
+        'examples/jars/spark-examples_2.12-3.0.0.jar '
+        'localhost '
+        '9999'
+        # 'test'
+    )
